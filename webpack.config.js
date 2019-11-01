@@ -101,12 +101,19 @@ module.exports = {
                 ]
             },
             {
-                test: /\.js$/,      // 匹配js文件，然后用下面所配置的工具对这些文件进行编译处理
+                // 匹配js文件，然后用下面所配置的工具对这些文件进行编译处理
+                test: /\.js$/,
                 use: {
-                    loader: 'babel-loader',     // babel的核心模块
+                    // babel的核心模块
+                    loader: 'babel-loader',
                     options: {
-                        presets: [              // 配置babel的预设，将ES语法转成ES5语法
+                        presets: [
+                            // 配置babel的预设，将ES语法转成ES5语法
                             '@babel/preset-env'
+                        ],
+                        plugins: [
+                            // 配置babel插件，转换更更高版本语法
+                            '@babel/plugin-proposal-class-properties'
                         ]
                     }
                 }
