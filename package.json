@@ -17,5 +17,9 @@
   },
   "scripts": {
     "build": "webpack"
+  },
+  "dependencies": {
+    "date-prototype": "^1.0.0",
+    "lodash": "^4.17.15"
   }
 }

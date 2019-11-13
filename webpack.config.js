@@ -1,10 +1,10 @@
 let path = require("path");
-let HtmlWebpackPlugin = require("html-webpack-plugin");
 let MiniCssExtract = require('mini-css-extract-plugin');
 
 const fs = require('fs')
 const glob = require('glob')
-const appDirectory = fs.realpathSync(process.cwd())
+const appDirectory = fs.realpathSync(process.cwd());
+const webpack = require("webpack");
 
 
 const SOURCE_DIR_NAME = "src";
@@ -12,7 +12,7 @@ const SOURCE_DIR_NAME = "src";
 const TARGET_DIR_NAME = "dist";
 
 
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 
 // 获取文件公共方法
@@ -65,7 +65,12 @@ module.exports = {
     }, {}),
     output: {
         filename: "[name].js",
-        path: path.resolve(__dirname, "dist")
+        path: path.resolve(__dirname, "dist"),
+        libraryTarget: 'umd',
+        umdNamedDefine: true
+    },
+    resolve: {
+        extensions: ['*', '.js', '.vue', '.json']
     },
     plugins: [
         // new HtmlWebpackPlugin({
@@ -81,6 +86,13 @@ module.exports = {
         //     filename: 'main.css'
         // }),
         new CleanWebpackPlugin(),
+
+        // short-circuits all Vue.js warning code
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: '"production"'
+            }
+        }),
     ],
     module: {
         rules: [{

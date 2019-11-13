@@ -1,7 +1,7 @@
 /**
  * 异形Promise，暴露resolve,resolve在外的Promise
  */
-export default class extends Promise{
+export default class BPromise extends Promise{
     constructor(callback) {
         let _resolve, _reject;
         super((resolve, reject)=>{
