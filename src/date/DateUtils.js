@@ -33,6 +33,13 @@ export default class DateUtils{
         }
         //日期字符串
         var parts = input.split(/[-:\sTZ\+年月日时分秒]/);
+
+
+        //只有年月的情况2018-06
+        if (parts.length == 2) {
+            parts[2] = 1;
+        }
+
         return new Date(parts[0], parts[1] - 1, parts[2], parts[3] || 0, parts[4] || 0, parts[5] || 0);
     }
 
