@@ -40,7 +40,10 @@ var proto = {
      * @returns {number}
      */
     getDayMountInMonth(){
-        return this.clone().add(1,"month").setDate(0).getDate();
+        let date = this.clone();
+        date.setMonth(date.getMonth()+1);
+        date.setDate(0);
+        return date.getDate();
     },
 
 
