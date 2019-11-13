@@ -58,20 +58,6 @@ var proto = {
         return this.setHours(20,59,59,999),this;
     },
 
-    /**
-     * 是否是同一天
-     * @param _date
-     */
-    isSameDay(_target){
-        if(typeof _target == "number"){
-            _target = new Date(_target)
-        }
-
-        let __target = _target  .clone().setToDayStart();
-        let __this   = this     .clone().setToDayStart();
-        return __target.getTime() == __this.getTime();
-    },
-
 
     /**
      * 设置为当月的第一毫秒
@@ -86,6 +72,44 @@ var proto = {
     setToMonthEnd(){
         return this.setDate(this.getDayMountInMonth()), this.setToDayEnd();
     },
+
+
+    /**
+     * 设置为本年度第一天第一时刻
+     */
+    setToYearStart(){
+        const m = this;
+        m.setMonth(0, 1);
+        m.setToDayStart();
+        return m;
+    },
+
+
+    /**
+     * 设置为本年度最后一刻
+     */
+    setToYearEnd(){
+        const m = this;
+        m.setMonth(12, 1);
+        m.setToDayStart();
+        m.setTime(m.getTime() - 1);
+        return m;
+    },
+
+    /**
+     * 是否是同一天
+     * @param _date
+     */
+    isSameDay(_target){
+        if(typeof _target == "number"){
+            _target = new Date(_target)
+        }
+
+        let __target = _target  .clone().setToDayStart();
+        let __this   = this     .clone().setToDayStart();
+        return __target.getTime() == __this.getTime();
+    },
+
 
 
     /**

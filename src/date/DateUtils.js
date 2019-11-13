@@ -11,7 +11,17 @@ export default class DateUtils{
 
         //数字或者字符串时间戳
         if (typeof input == "number" || /^\d+$/.test(input + "")) {
-            return new Date(input * 1);
+
+            //4标识是年
+            if(input.length === 4){
+                let a = new Date;
+                a.setFullYear(input * 1);
+                return a;
+
+            //其他情况，自求多福
+            }else{
+                return new Date(input * 1);
+            }
 
             //空对象
         } else if (!input) {
@@ -21,7 +31,6 @@ export default class DateUtils{
         }else if (input.constructor == Date) {
             return input;
         }
-
         //日期字符串
         var parts = input.split(/[-:\sTZ\+年月日时分秒]/);
         return new Date(parts[0], parts[1] - 1, parts[2], parts[3] || 0, parts[4] || 0, parts[5] || 0);
