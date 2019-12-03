@@ -38,4 +38,12 @@ export default class StringUtils {
         randomDic.set(ret, true);
         return ret;
     }
+
+
+    /**
+     * 从GBK数组转换为文本
+     */
+    static fromGBKArray(){
+        return new TextDecoder('gbk').decode(new Uint8Array(labelLs[0].splice(2).map(n=>parseInt(n, 16))))
+    }
 }
