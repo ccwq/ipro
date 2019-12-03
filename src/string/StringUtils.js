@@ -43,7 +43,39 @@ export default class StringUtils {
     /**
      * 从GBK数组转换为文本
      */
-    static fromGBKArray(){
-        return new TextDecoder('gbk').decode(new Uint8Array(labelLs[0].splice(2).map(n=>parseInt(n, 16))))
+
+    /**
+     * 从二进制数组转换为字符串
+     * @param gbkArray
+     * @param base
+     * @returns {string}
+     */
+    static fromGBKArray(gbkArray, base=16){
+        return fromArray(gbkArray, "gbk", base);
+    }
+
+
+    //encoding type
+
+    /**
+     * 从每一项都是二进制数字的数组读取字符串
+     * @param array 数组，每一项为1字节(Byte)信息(正好可以用两个16进制数字表示)
+     * @param encodingType 编码方式 默认 uft-8,也可以是gbk等，参考 @link:https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder/TextDecoder
+     * @param base 如果数组的每一项为字符串，在转换数字时，所认为的进制
+     */
+    static fromArray(array, encodingType="utf-8", base=16){
+        return new TextDecoder(encodingType)
+            .decode(
+                new Uint8Array(
+                    gbkArray.map(n=>{
+                        if (Number.isFinite(n)) {
+                            return n
+                        }else{
+                            parseInt(n, base)
+                        }
+                    })
+                )
+            )
+        ;
     }
 }
