@@ -51,7 +51,7 @@ export default class StringUtils {
      * @returns {string}
      */
     static fromGBKArray(gbkArray, base=16){
-        return fromArray(gbkArray, "gbk", base);
+        return this.fromArray(gbkArray, "gbk", base);
     }
 
 
