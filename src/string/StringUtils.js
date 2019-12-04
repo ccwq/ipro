@@ -67,7 +67,7 @@ export default class StringUtils {
         return new TextDecoder(encodingType)
             .decode(
                 new Uint8Array(
-                    gbkArray.map(n=>{
+                    array.map(n=>{
                         if (Number.isFinite(n)) {
                             return n
                         }else{
