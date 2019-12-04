@@ -71,7 +71,7 @@ export default class StringUtils {
                         if (Number.isFinite(n)) {
                             return n
                         }else{
-                            parseInt(n, base)
+                            return parseInt(n, base)
                         }
                     })
                 )
