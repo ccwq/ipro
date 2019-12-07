@@ -51,7 +51,7 @@ export default class StringUtils {
      * @returns {string}
      */
     static fromGBKArray(gbkArray, base=16){
-        return fromArray(gbkArray, "gbk", base);
+        return this.fromArray(gbkArray, "gbk", base);
     }
 
 
@@ -67,15 +67,38 @@ export default class StringUtils {
         return new TextDecoder(encodingType)
             .decode(
                 new Uint8Array(
-                    gbkArray.map(n=>{
+                    array.map(n=>{
                         if (Number.isFinite(n)) {
                             return n
                         }else{
-                            parseInt(n, base)
+                            return parseInt(n, base)
                         }
                     })
                 )
             )
         ;
+    }
+
+
+    /**
+     * 文本转GBK,Array
+     * @param string
+     */
+    static toGBKByteArray(string){
+        var str = $URL.encode(str)
+        var byteArr = new Array();
+        for(var i=0; i<str.length;i++){
+            var ch = str.charAt(i);
+            if(ch == '%'){
+                var num = str.charAt(i+1) + str.charAt(i+2);
+                num = parseInt(num,16);
+                num = num | (-1 << 8);
+                byteArr.push(num);
+                i+=2;
+            }else{
+                byteArr.push(ch.charCodeAt());
+            }
+        }
+        return byteArr;
     }
 }
