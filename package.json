@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "date-prototype": "^1.0.0",
+    "fast-gbk": "^0.0.1",
     "lodash": "^4.17.15"
   }
 }
