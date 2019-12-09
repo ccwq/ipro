@@ -48,9 +48,10 @@ export default class StringUtils {
      * 从二进制数组转换为字符串
      * @param gbkArray
      * @param base
+     * @param isFilter255 是否过滤掉值为255的项
      * @returns {string}
      */
-    static fromGBKArray(gbkArray, base=16){
+    static fromGBKArray(gbkArray, base=16, isFilter255=false){
         return this.fromArray(gbkArray, "gbk", base);
     }
 
