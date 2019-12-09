@@ -1,4 +1,4 @@
-export class NumberUtils {
+export default class NumberUtils {
 
     /**
      * 数字前面补0，凑够特定长度
