@@ -7,7 +7,7 @@ export default class NumberUtils {
      * @param base 进制，默认十进制
      */
     static preZeroFill(totalLength, value, base=10) {
-        value = parseFloat(value);
+        //value = parseFloat(value);
         let pad = totalLength - (value + "").length;
         if (pad <= 0) {
             return value;
