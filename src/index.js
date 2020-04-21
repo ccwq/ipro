@@ -7,6 +7,7 @@ import $D from "date-prototype";
 import "./collect/array.prototy"
 
 import StringUtils from "./string/StringUtils";
+import NumberUtils from "./number/NumberUtils";
 import "./string/string.prototype"
 
 //promise
@@ -22,6 +23,7 @@ let ipro = {
     $D,
     BPromise,
     AError,
+    NumberUtils,
 };
 
 export default ipro;

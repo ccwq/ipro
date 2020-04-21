@@ -1,4 +1,5 @@
 const randomDic = new Map();
+import $GBK from "../base/$GBK";
 
 export default class StringUtils {
     /**
@@ -41,21 +42,22 @@ export default class StringUtils {
 
 
     /**
-     * 从GBK数组转换为文本
+     * 从不可读转为中文
+     * @param str 可以传入 %aa%af, ["aa", "af"], "aa,af"三种类型的字符串
+     * @returns {undefined}
      */
-
-    /**
-     * 从二进制数组转换为字符串
-     * @param gbkArray
-     * @param base
-     * @returns {string}
-     */
-    static fromGBKArray(gbkArray, base=16){
-        return this.fromArray(gbkArray, "gbk", base);
+    static decodeGBK(hexInfo){
+        return $GBK.decode(hexInfo);
     }
 
 
-    //encoding type
+    /**
+     * 通hex数组转换为可读中文字符串
+     * @returns {*}
+     */
+    static fromGBKArray(array){
+        return $GBK.decode(array);
+    }
 
     /**
      * 从每一项都是二进制数字的数组读取字符串
@@ -64,6 +66,10 @@ export default class StringUtils {
      * @param base 如果数组的每一项为字符串，在转换数字时，所认为的进制
      */
     static fromArray(array, encodingType="utf-8", base=16){
+        if(encodingType.toLowerCase() == "gbk" && base==16){
+            return StringUtils.decodeGBK(array);
+        }
+
         return new TextDecoder(encodingType)
             .decode(
                 new Uint8Array(
@@ -81,24 +87,16 @@ export default class StringUtils {
 
 
     /**
-     * 文本转GBK,Array
+     * 文本转GBK的十六进制数组
+     *  可读到不可读
      * @param string
+     * @param outtype stinrg|array
      */
-    static toGBKByteArray(string){
-        var str = $URL.encode(str)
-        var byteArr = new Array();
-        for(var i=0; i<str.length;i++){
-            var ch = str.charAt(i);
-            if(ch == '%'){
-                var num = str.charAt(i+1) + str.charAt(i+2);
-                num = parseInt(num,16);
-                num = num | (-1 << 8);
-                byteArr.push(num);
-                i+=2;
-            }else{
-                byteArr.push(ch.charCodeAt());
-            }
+    static encodeGBK(cnString, outtype="string"){
+        if (outtype == "string") {
+            return $GBK.encode(cnString);
+        }else{
+            return $GBK.encode(cnString).split("%").splice(1);
         }
-        return byteArr;
     }
 }
