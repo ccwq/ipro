@@ -2,7 +2,17 @@
  * 支持直接定义错误码的Error对象
  * @type {RegExp}
  */
-const errorCodeRG = /\:\:([-\d\.]+)$/
+
+
+//分隔符
+const CODE_SPLITE = "::";
+
+// ^
+// | 上下关联需要同时修改
+// v
+
+//用来解析code的正则
+const errorCodeRG = /\:\:([-\d\.]+)$/;
 
 // todo: get code, toString设置全部无效
 
@@ -10,6 +20,9 @@ const errorCodeRG = /\:\:([-\d\.]+)$/
  * 错误对象
  */
 export default class AError {
+
+
+
     /**
      * @param name 错误名
      * @param code 错误码
@@ -86,7 +99,7 @@ export default class AError {
      */
     static fromErrorText (errText, silent = false) {
         const m = this
-        const key = `${errText}-${silent ? '0' : '1'}`
+        const key = `${errText}-${silent ? '0' : '1'}`;
         let ins = fromErrorTextCache[key]
         if (!ins) {
             let code, name
@@ -114,17 +127,47 @@ export default class AError {
         if (!errorObj) {
             return new AError('未知错误', -9999)
         }
-        if (errorObj.data) {
-            errorObj = errorObj.data
+        let message;
+
+        //是错误对象
+        if (errorObj instanceof Error) {
+            return m.fromErrorText(errorObj.message, silent);
+        }
+
+        //可能是JSON
+        if (/^(\[|\{)/.test(errorObj)) {
+
+            //尝试解析JSON
             try {
                 errorObj = JSON.parse(errorObj)
             } catch (e) { /* console.log(); */ }
         }
-        const name = errorObj.error || errorObj.message || errorObj.msg || errorObj.reason || errorObj.errorText || errorObj
+
+        //是否安静
         if (!silent) {
-            silent = errorObj.silence || errorObj.silent
+            silent = errorObj.silence || errorObj.silent;
         }
-        return m.fromErrorText(name, silent)
+
+        if (typeof errorObj != "string") {
+            message = getValue(errorObj, [...m.AddNameFieldList, ...m.NameFieldList]);
+        }
+
+        if (!message && errorObj.data) {
+            return m.fromObject(errorObj.data);
+        }
+
+        return m.fromErrorText(message, silent);
+    }
+
+
+    /**
+     * 第一个参数可以取所有支持的值
+     * @param errObject
+     * @param slient
+     * @returns {AError}
+     */
+    static create(errObject, slient=false){
+        return this.fromObject(errObject, slient);
     }
 
     /**
@@ -142,15 +185,47 @@ export default class AError {
 
         return this.fromObject(errorText_errorObject)._code
     }
-
-    /**
-     * 展示错误信息
-     * @param errorText_errorObject
-     */
-    static toast (errorText_errorObject) {
-        const ins = AError.fromObject(errorText_errorObject)
-        console.error(ins.toString2())
-    }
 }
 
-const fromErrorTextCache = {}
+
+Object.assign(AError, {
+
+    //猜测错误对象名称的字段
+    NameFieldList : ["error", "message", "msg", "errMsg", "reason", "errorText"],
+
+    //附加的猜测对象名称的字段
+    AddNameFieldList: [],
+})
+
+const fromErrorTextCache = {};
+
+
+/**
+ * 根据传入的字段列表，尝试获取非空值，获取到值立即结束
+ * @param object
+ * @param keyLs
+ * @param defaultValue
+ * @returns {*}
+ */
+function getValue(object, keyLs, defaultValue){
+    if (typeof keyLs === "string") {
+        keyLs = keyLs.split(",").map(s => s.trim());
+    }
+
+    if (!Array.isArray(keyLs)) {
+        return ;
+    }
+
+    for (let i = 0; i < keyLs.length; i++) {
+        let key = keyLs[i];
+
+        if(object[key]){
+            return object[key];
+        }
+    }
+
+    return defaultValue;
+}
+
+
+
