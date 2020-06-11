@@ -4,6 +4,8 @@ import DateUtils from "./date/DateUtils";
 import "./date/date.prototype";
 import $D from "date-prototype";
 
+import ObjectUtils from "./object/ObjectUtils";
+
 import "./collect/array.prototy"
 
 import StringUtils from "./string/StringUtils";
@@ -24,6 +26,7 @@ let ipro = {
     BPromise,
     AError,
     NumberUtils,
+    ObjectUtils,
 };
 
 export default ipro;
