@@ -1,8 +1,7 @@
 import $D from "date-prototype";
-
 export default class DateUtils{
 
-    /**
+    /*
      * 转换各种类型的数据到天气
      * @param input number
      * @returns {Date|*}
@@ -87,3 +86,5 @@ export default class DateUtils{
         return date.getDate();
     }
 }
+
+

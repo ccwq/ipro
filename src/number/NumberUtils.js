@@ -14,4 +14,16 @@ export default class NumberUtils {
         }
         return Array(pad).fill("0").join("") + (value + "")
     }
+
+
+    /**
+     * 截取js小数计算出现无限循环之外的部分
+     * strip(0.2+0.1)==0.3
+     * @param num
+     * @param precision
+     * @returns {number}
+     */
+    static strip(num, precision = 12) {
+        return +parseFloat(num.toPrecision(precision));
+    }
 }
