@@ -26,4 +26,14 @@ export default class NumberUtils {
     static strip(num, precision = 12) {
         return +parseFloat(num.toPrecision(precision));
     }
+
+
+    /**
+     *
+     * @param number
+     * @param fixed
+     */
+    static stripAndFix(number, fixedNum=2){
+        return this.strip(number).toFixed(fixedNum) * 1;
+    }
 }

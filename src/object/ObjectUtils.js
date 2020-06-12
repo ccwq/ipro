@@ -58,5 +58,4 @@ export default class ObjectUtils {
     static get2(object, keyLs, defaultValue) {
         return __get(object, keyLs, defaultValue, true);
     }
-
 }
