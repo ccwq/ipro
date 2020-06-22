@@ -19,15 +19,15 @@ export default class NumberUtils {
     /**
      * 截取js小数计算出现无限循环之外的部分
      * strip(0.2+0.1)==0.3
-     * @param num
+     * @param number
      * @param precision
      * @returns {number}
      */
-    static strip(num, precision = 12) {
+    static strip(number, precision = 12) {
         if (typeof number != "number") {
             number = 0;
         }
-        return +parseFloat(num.toPrecision(precision));
+        return +parseFloat(number.toPrecision(precision));
     }
 
 
