@@ -24,6 +24,9 @@ export default class NumberUtils {
      * @returns {number}
      */
     static strip(num, precision = 12) {
+        if (typeof number != "number") {
+            number = 0;
+        }
         return +parseFloat(num.toPrecision(precision));
     }
 
@@ -34,6 +37,9 @@ export default class NumberUtils {
      * @param fixed
      */
     static stripAndFix(number, fixedNum=2){
+        if (typeof number != "number") {
+            number = 0;
+        }
         return this.strip(number).toFixed(fixedNum) * 1;
     }
 }
