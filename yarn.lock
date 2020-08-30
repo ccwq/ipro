@@ -2380,14 +2380,6 @@ invert-kv@^2.0.0:
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-2.0.0.tgz#7393f5afa59ec9ff5f67a27620d11c226e3eec02"
   integrity sha512-wPVv/y/QQ/Uiirj/vh3oP+1Ww+AWehmi1g5fFWGPF6IpCBCDVrhgHRMvrLfdYcwDh3QJbGXDW4JAuzxElLSqKA==
 
-ipro@^1.0.15:
-  version "1.0.15"
-  resolved "http://mirror.s.trmap.cn/repository/trnpm/ipro/-/ipro-1.0.15.tgz#b95e29bfc0425c8a59664fdb81185aae21b74f5f"
-  integrity sha1-uV4pv8BCXIpZZk/bgRhariG3T18=
-  dependencies:
-    date-prototype "^1.0.0"
-    lodash "^4.17.15"
-
 is-accessor-descriptor@^0.1.6:
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/is-accessor-descriptor/-/is-accessor-descriptor-0.1.6.tgz#a9e12cb3ae8d876727eeef3843f8a0897b5c98d6"

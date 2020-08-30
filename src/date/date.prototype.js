@@ -58,7 +58,7 @@ var proto = {
 
     //设置为一天的最后一毫秒
     setToDayEnd(){
-        return this.setHours(20,59,59,999),this;
+        return this.setHours(23,59,59,999),this;
     },
 
 
