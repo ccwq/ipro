@@ -30,7 +30,6 @@ export default class NumberUtils {
         return +parseFloat(number.toPrecision(precision));
     }
 
-
     /**
      *
      * @param number
