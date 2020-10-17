@@ -1,5 +1,5 @@
 import chunk from "lodash/chunk";
-import NumberUtils from "ipro/src/number/NumberUtils";
+import NumberUtils from "../number/NumberUtils";
 
 
 const preZeroFill = NumberUtils.preZeroFill;
