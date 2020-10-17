@@ -1,27 +1,30 @@
 {
-  "name": "ipro",
-  "version": "1.0.27",
-  "main": "src/index.js",
-  "license": "MIT",
-  "devDependencies": {
-    "@babel/core": "^7.6.4",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@babel/plugin-proposal-optional-chaining": "^7.6.0",
-    "@babel/preset-env": "^7.6.3",
-    "babel-loader": "^8.0.6",
-    "clean-webpack-plugin": "^3.0.0",
-    "glob": "^7.1.5",
-    "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^0.8.0",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10"
-  },
-  "scripts": {
-    "build": "webpack"
-  },
-  "dependencies": {
-    "date-prototype": "^1.0.0",
-    "fast-gbk": "^0.0.1",
-    "lodash": "^4.17.15"
-  }
+    "name": "ipro",
+    "version": "1.0.29",
+    "main": "src/index.js",
+    "license": "MIT",
+    "devDependencies": {
+        "@babel/core": "^7.6.4",
+        "@babel/plugin-proposal-class-properties": "^7.5.5",
+        "@babel/plugin-proposal-optional-chaining": "^7.6.0",
+        "@babel/preset-env": "^7.6.3",
+        "babel-loader": "^8.0.6",
+        "clean-webpack-plugin": "^3.0.0",
+        "glob": "^7.1.5",
+        "html-webpack-plugin": "^3.2.0",
+        "mini-css-extract-plugin": "^0.8.0",
+        "webpack": "^4.41.2",
+        "webpack-cli": "^3.3.10"
+    },
+    "scripts": {
+        "build": "webpack",
+        "publish major": "snpm version major && snpm publish",
+        "publish minor": "snpm version minor && snpm publish",
+        "publish patch": "snpm version patch && snpm publish"
+    },
+    "dependencies": {
+        "date-prototype": "^1.0.0",
+        "fast-gbk": "^0.0.1",
+        "lodash": "^4.17.15"
+    }
 }

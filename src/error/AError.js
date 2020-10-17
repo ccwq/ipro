@@ -127,6 +127,7 @@ export default class AError {
         if (!errorObj) {
             return new AError('未知错误', -9999)
         }
+
         let message;
 
         //是错误对象
@@ -134,23 +135,30 @@ export default class AError {
             return m.fromErrorText(errorObj.message, silent);
         }
 
-        //可能是JSON
-        if (/^(\[|\{)/.test(errorObj)) {
 
-            //尝试解析JSON
-            try {
-                errorObj = JSON.parse(errorObj)
-            } catch (e) { /* console.log(); */ }
-        }
+        //字符串
+        if (typeof errorObj == "string") {
+            //可能是JSON
+            if (/^(\[|\{)/.test(errorObj)) {
 
-        //是否安静
-        if (!silent) {
-            silent = errorObj.silence || errorObj.silent;
-        }
-
-        if (typeof errorObj != "string") {
+                //尝试解析JSON
+                try {
+                    errorObj = JSON.parse(errorObj)
+                } catch (e) {
+                    message = errorObj;
+                }
+            }else{
+                message = errorObj;
+            }
+        }else{
             message = getValue(errorObj, [...m.AddNameFieldList, ...m.NameFieldList]);
+
+            //是否安静
+            if (!silent) {
+                silent = errorObj.silence || errorObj.silent;
+            }
         }
+
 
         if (!message && errorObj.data) {
             return m.fromObject(errorObj.data);
