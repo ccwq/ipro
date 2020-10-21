@@ -1,3 +1,6 @@
+import {promiseMap} from "./utils";
+
+
 /**
  * 异形Promise，暴露resolve,resolve在外的Promise
  */
@@ -13,6 +16,16 @@ export default class BPromise extends Promise{
         p._reject(value);
         return  p;
     }
+
+
+    static map(promiseLs){
+        return promiseMap(promisLs);
+    }
+
+    static all(ls){
+        return Promise.all(ls);
+    }
+
     constructor(callback) {
         let _resolve, _reject;
         super((resolve, reject)=>{
