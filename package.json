@@ -18,9 +18,9 @@
     },
     "scripts": {
         "build": "webpack",
-        "publish major": "snpm version major && snpm publish",
-        "publish minor": "snpm version minor && snpm publish",
-        "publish patch": "snpm version patch && snpm publish"
+        "publish major": "npm run build && snpm version major && snpm publish",
+        "publish minor": "npm run build && snpm version minor && snpm publish",
+        "publish patch": "npm run build && snpm version patch && snpm publish"
     },
     "dependencies": {
         "date-prototype": "^1.0.0",
