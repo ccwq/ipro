@@ -39,7 +39,12 @@ export default class Math2 {
      * @param chunk2  使用逗号,两个一组分割
      * @returns {*}
      */
-     static toHEX(number, length = 2, chunk2 = false) {
+    static toHEX(number, length = 2, chunk2 = false) {
+
+        if (/[a-zA-Z]/.test(number)) {
+            console.warn("无法转换为HEX:", number);
+        }
+
         number = parseInt(number);
         let ret = this.dec2HexArray(number, length)[0];
 
