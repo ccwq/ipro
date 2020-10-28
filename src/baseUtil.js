@@ -1,3 +1,6 @@
+import crawl from "tree-crawl";
+
+
 /**
  * 安全的绑定方法到原型上
  * @param prototype
@@ -18,3 +21,25 @@ export const safeBindToObject = function(prototype, key, value){
     }
 }
 
+/**
+ * 遍历树
+ * @param treedata
+ * @param childrenField
+ * @param stepCallback
+ */
+export const treeEach = function(treedata, childrenField, stepCallback){
+
+    if (Array.isArray(treedata)) {
+        treedata = {[childrenField]: treedata}
+    }
+    crawl(
+        treedata,
+        stepCallback,
+        {
+            getChildren(node) {
+                return node[childrenField];
+            }
+        }
+    )
+    return treedata;
+}
