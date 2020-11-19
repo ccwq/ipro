@@ -5,7 +5,6 @@
     "license": "MIT",
     "scripts": {
         "build": "npm run build:umd",
-        "build-2": "node babel.config.js",
         "serve": "vue-cli-service serve build/serve.js",
         "publish major": "npm build && snpm version major && snpm publish",
         "publish minor": "npm build && snpm version minor && snpm publish",
