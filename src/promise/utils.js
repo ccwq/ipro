@@ -1,6 +1,6 @@
 export const promiseMap = function(){
     let promiseList;
-    if (Array.isArray[arguments[0]]) {
+    if (Array.isArray(arguments[0])) {
         promiseList = arguments[0];
     }else{
         promiseList = Array.prototype.slice.call(arguments);
@@ -16,7 +16,7 @@ export const promiseMap = function(){
 
                         //用来提前停止reduce
                         ls.splice(1);
-                        return Promise.resolve(e);
+                        return Promise.reject(e);
                     }
                 }
                 return current.then(_ret => {
