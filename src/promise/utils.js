@@ -1,4 +1,10 @@
-export const promiseMap = function(promiseList){
+export const promiseMap = function(){
+    let promiseList;
+    if (Array.isArray[arguments[0]]) {
+        promiseList = arguments[0];
+    }else{
+        promiseList = Array.prototype.slice.call(arguments);
+    }
     let result = [];
     return promiseList.reduce(
         function (prev, current, index, ls) {
