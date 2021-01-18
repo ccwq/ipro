@@ -2,7 +2,7 @@ import crawl from "tree-crawl";
 
 
 /**
- * 安全的绑定方法到原型上
+ * 安全的绑定方法到对象上
  * @param prototype
  * @param key
  * @param value
