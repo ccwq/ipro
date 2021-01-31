@@ -1,4 +1,5 @@
 import {promiseMap} from "./utils";
+import {safeBindToObject} from "ipro/src/baseUtil";
 
 
 /**
@@ -35,9 +36,40 @@ export default class BPromise extends Promise{
                 callback(resolve, reject);
             }
         });
+
         Object.assign(this, {
             _resolve,
             _reject,
         })
+    }
+
+    /**
+     * 是否pending状态
+     * @returns {boolean}
+     */
+    getPendingStatus(){
+        let status = true;
+        this.then(__ => status = false, __ => status = false);
+        return status;
+    }
+
+    /**
+     * 是否成功状态
+     * @returns {boolean}
+     */
+    getFulfilledStatus(){
+        let status = false;
+        this.then(__ => status = true, __ => status = false);
+        return status;
+    }
+
+    /**
+     * 是否拒绝
+     * @returns {boolean}
+     */
+    getRejectedStatus(){
+        let status = false;
+        this.then(__ => status = false, __ => status = true);
+        return status;
     }
 }
