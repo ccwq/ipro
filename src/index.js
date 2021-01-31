@@ -12,6 +12,8 @@ import StringUtils from "./string/StringUtils";
 import NumberUtils from "./number/NumberUtils";
 import "./string/string.prototype"
 
+export * from "./number/NumberUtils";
+
 //promise
 import "./promise/promise.protype";
 import BPromise from "./promise/BPromise";
