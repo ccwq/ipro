@@ -19,6 +19,10 @@ import BPromise from "./promise/BPromise";
 //错误
 import AError from "./error/AError";
 
+
+//function的prototype修改
+import "./function/function.prototype";
+
 let ipro = {
     StringUtils,
     DateUtils,
