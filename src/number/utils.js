@@ -28,8 +28,6 @@ export const safeValueInLs = function (value, ls, def = 0) {
 
 
 
-
-
 /**
  * 数字范围安全安全值
  * @param value
