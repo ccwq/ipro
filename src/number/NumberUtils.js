@@ -66,8 +66,12 @@ export const safeValueInLs = function (value, ls, def = 0) {
         }
     }
 
-    return ls.includes(value) || defValue;
+    return ls.includes(value) || def;
 };
+
+
+import Math2 from "./Math2";
+
 
 
 /**
@@ -79,7 +83,7 @@ export const safeValueInLs = function (value, ls, def = 0) {
  */
 export const safeValueInRange = function (value, max = Number.MAX_SAFE_INTEGER, min = 0) {
     const isHex = typeof value == "string"
-    let ret = isHex ? toDEC(value) : value;
+    let ret = isHex ? Math2.toDEC(value) : value;
     if (typeof min == "number") {
         ret = Math.max(min, ret);
     }
@@ -88,5 +92,5 @@ export const safeValueInRange = function (value, max = Number.MAX_SAFE_INTEGER, 
         ret = Math.min(max, ret);
     }
 
-    return isHex ? toHEX(ret) : ret;
+    return isHex ? Math2.toHEX(ret) : ret;
 };

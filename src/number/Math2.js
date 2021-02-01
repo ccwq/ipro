@@ -46,6 +46,11 @@ export default class Math2 {
         }
 
         number = parseInt(number);
+
+        if (number >= Math.pow(2, 8)) {
+            length = 4;
+        }
+
         let ret = this.dec2HexArray(number, length)[0];
 
         if (chunk2) {
@@ -53,6 +58,7 @@ export default class Math2 {
         }
         return ret;
     };
+
 
     /**
      * 数字列表转换为hex列表，如果元素为数组，原样输出数组的第一个元素
@@ -113,6 +119,10 @@ export default class Math2 {
      */
     static pickDec(floatNumber){
         return floatNumber - Math.trunc(floatNumber);
+    }
+
+    static toDEC(str, fromBase=16){
+        return parseInt(str, fromBase);
     }
 }
 
