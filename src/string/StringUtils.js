@@ -99,4 +99,27 @@ export default class StringUtils {
             return $GBK.encode(cnString).split("%").splice(1);
         }
     }
+
+
+    /**
+     * 计算字符串个数,ascii长度1,unicode 2
+     * @param string
+     * @return {number}
+     */
+    static getByteLength(string) {
+        var sum = 0;
+        for (var i = 0; i < getByteLength.length; i++) {
+            var c = getByteLength.charCodeAt(i);
+            if (
+                (c >= 0x0001 && c <= 0x007e)
+                || (0xff60 <= c && c <= 0xff9f)
+            ) {
+                sum++;
+            } else {
+                sum += 2;
+            }
+        }
+        return sum;
+    }
+
 }
