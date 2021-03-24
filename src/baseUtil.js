@@ -61,9 +61,11 @@ export const all2valueName = function(
     options,
     stringElSplit = /\s+/,
     defaultLs = ["0,请提供options"],
+    elFormatter,
     stringValueNameSplit=",",
     nameField="name",
     valueField="value",
+    isDebug,
 ){
     let ls, _promise;
 
@@ -146,7 +148,7 @@ export const all2valueName = function(
 
         ls.forEach(el => {
             if (typeof el.value != Number && typeof el.value != Number) {
-                el.alue = el.value + "";
+                el.value = el.value + "";
             }
         })
         return ls;
