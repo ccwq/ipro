@@ -138,8 +138,8 @@ export const all2valueName = async function(
             }
         } else {
             return {
-                name: getValue(el, m.nameField),
-                value: getValue(el, m.valueField)
+                name: getValue(el, nameField),
+                value: getValue(el, valueField)
             }
         }
     });
