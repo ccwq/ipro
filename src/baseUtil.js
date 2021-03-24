@@ -57,7 +57,7 @@ export const treeEach = function(treedata, childrenField, stepCallback){
  * @param valueField 使用object类型item时value的字段
  * @returns {Promise<*>}
  */
-export const all2valueName = async function(
+export const all2valueName = function(
     options,
     stringElSplit = /\s+/,
     defaultLs = ["0,请提供options"],
@@ -65,14 +65,12 @@ export const all2valueName = async function(
     nameField="name",
     valueField="value",
 ){
-    const m = this;
-
-    let ls;
+    let ls, _promise;
 
     //数组解析
     //是函数
     if (typeof options == "function") {
-        ls = await options();
+        _promise = options();
 
         //字符串的形式
     }if (typeof options == "string") {
@@ -87,7 +85,7 @@ export const all2valueName = async function(
         if (Array.isArray(defaultLs)) {
             ls = defaultLs
         }else if(typeofdefaultLs == "function"){
-            ls = await defaultLs();
+            _promise = defaultLs();
         }else{
             ls = [{
                 name:"请通过optionLs传入数组或者异步函数",
@@ -96,60 +94,67 @@ export const all2valueName = async function(
         }
     }
 
-    //处理formater
-    if (typeof elFormatter == "function") {
-        ls = ls.map((el)=>{
-            let [value, name] = elFormatter(el, {
-                valueField: valueField,
-                nameField : nameField,
-            }, getValue);
-            return {value, name};
+    const handler = function (ls) {
+        //处理formater
+        if (typeof elFormatter == "function") {
+            ls = ls.map((el) => {
+                let [value, name] = elFormatter(el, {
+                    valueField: valueField,
+                    nameField: nameField,
+                }, getValue);
+                return {value, name};
+            });
+        }
+
+
+        let _ls = compact(ls);
+
+        if (_ls.length != ls.length) {
+            console.warn("options中存在空选项", ls);
+        }
+
+        ls = _ls;
+
+        //以数组为参数
+        ls = ls.map(el => {
+
+            const _el = el;
+
+            //切割字符串
+            if (typeof el == "string" || typeof el == "number") {
+                el = (el + "").split(stringValueNameSplit).map(el => el.trim());
+            }
+
+            if (Array.isArray(el)) {
+                let [value, name] = el;
+                if (name === undefined) {
+                    name = value;
+                }
+                return {value, name};
+            } else if (!el) {
+                return {
+                    name: "无效options",
+                    value: "-",
+                }
+            } else {
+                return {
+                    name: getValue(el, nameField),
+                    value: getValue(el, valueField)
+                }
+            }
         });
+
+        ls.forEach(el => {
+            if (typeof el.value != Number && typeof el.value != Number) {
+                el.alue = el.value + "";
+            }
+        })
+        return ls;
+    };
+
+    if (ls) {
+        return handler(ls);
+    }else{
+        return _promise.then(ls => handler(ls));
     }
-
-
-    let _ls = compact(ls);
-
-    if (_ls.length != ls.length) {
-        console.warn("options中存在空选项", ls);
-    }
-
-    ls = _ls;
-
-    //以数组为参数
-    ls = ls.map(el => {
-
-        const _el = el;
-
-        //切割字符串
-        if (typeof el == "string" || typeof el == "number") {
-            el = (el + "").split(stringValueNameSplit).map(el => el.trim());
-        }
-
-        if (Array.isArray(el)) {
-            let [value, name] = el;
-            if (name === undefined) {
-                name = value;
-            }
-            return {value, name};
-        } else if (!el) {
-            return {
-                name: "无效options",
-                value: "-",
-            }
-        } else {
-            return {
-                name: getValue(el, nameField),
-                value: getValue(el, valueField)
-            }
-        }
-    });
-
-    ls.forEach(el=>{
-        if (typeof el.value != Number && typeof el.value != Number) {
-            el.alue = el.value + "";
-        }
-    })
-
-    return ls;
 }
