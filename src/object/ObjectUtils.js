@@ -13,7 +13,7 @@ import compact from "lodash/compact";
  * @param isUseNil 使用lodash的isNil来做空判断
  * @returns {*}
  */
-const getValue = function(object, keyLs){
+export const getValue = function(object, keyLs){
     if (typeof keyLs === "string") {
         keyLs = keyLs.split(",")
     }
