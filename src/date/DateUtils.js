@@ -62,7 +62,7 @@ export const all2date = function(input){
             const [
                 y  = now.getFullYear(),
                 m  = now.getMonth() + 1,
-                d  = mow.getDate(),
+                d  = now.getDate(),
                 h  = now.getHours(),
                 mm = now.getMinutes(),
                 s  = now.getSeconds()
