@@ -1,3 +1,8 @@
+/**
+ * Promise.all的map版本
+ * 传入数组或者数组的展开
+ * @return {*}
+ */
 export const promiseMap = function(){
     let promiseList;
     if (Array.isArray(arguments[0])) {
@@ -18,6 +23,8 @@ export const promiseMap = function(){
                         ls.splice(1);
                         return Promise.reject(e);
                     }
+                }else{
+                    console.warn("map element:"+ index +" not function");
                 }
                 return current.then(_ret => {
                     result[index] = _ret;
