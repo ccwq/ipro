@@ -1,4 +1,4 @@
-import $D from "date-prototype";
+import $D from "./date-prototype";
 
 /*
  * 转换各种类型的数据到日期
