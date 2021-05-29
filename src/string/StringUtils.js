@@ -26,6 +26,42 @@ export default class StringUtils {
         return first.toUpperCase() + rest.join('');
     } ;
 
+    /**
+     * 字数限制
+     * @param string
+     * @param length
+     * @returns {string|*}
+     */
+    static strip(string, length) {
+        if (!string || !length) {
+            return '';
+        }
+        // 预期计数：中文2字节，英文1字节
+        var a = 0;
+        // 循环计数
+        var i = 0;
+        // 临时字串
+        var temp = '';
+        for (i = 0; i < string.length; i++) {
+            if (string.charCodeAt(i) > 255) {
+                // 按照预期计数增加2
+                a += 2;
+            }
+            else {
+                a++;
+            }
+            // 如果增加计数后长度大于限定长度，就直接返回临时字符串
+            if (a > length) {
+                return temp;
+
+            }
+            // 将当前内容加到临时字符串
+            temp += string.charAt(i);
+        }
+        // 如果全部是单字节字符，就直接返回源字符串
+        return string;
+    }
+
 
     /**
      * 产生一个不重复的字符串
@@ -122,4 +158,40 @@ export default class StringUtils {
         return sum;
     }
 
+}
+
+/**
+ * 字符串截取
+ * @param string
+ * @param length
+ * @returns {string|*}
+ */
+export const strStrip = function(string, length, endfix="...") {
+    if (!string || !length) {
+        return '';
+    }
+    // 预期计数：中文2字节，英文1字节
+    var a = 0;
+    // 循环计数
+    var i = 0;
+    // 临时字串
+    var temp = '';
+    for (i = 0; i < string.length; i++) {
+        if (string.charCodeAt(i) > 255) {
+            // 按照预期计数增加2
+            a += 2;
+        }
+        else {
+            a++;
+        }
+        // 如果增加计数后长度大于限定长度，就直接返回临时字符串
+        if (a > length) {
+            return temp + endfix;
+
+        }
+        // 将当前内容加到临时字符串
+        temp += string.charAt(i);
+    }
+    // 如果全部是单字节字符，就直接返回源字符串
+    return string;
 }
