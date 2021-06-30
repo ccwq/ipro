@@ -2,7 +2,7 @@
 //日期
 import DateUtils from "./date/DateUtils";
 import "./date/date.prototype";
-import $D from "date/date.prototype";
+import $D from "date/date-prototype";
 
 import ObjectUtils from "./object/ObjectUtils";
 
