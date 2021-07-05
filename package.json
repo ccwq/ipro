@@ -34,7 +34,7 @@
         "rollup-plugin-vue": "^5.1.6"
     },
     "dependencies": {
-        "lodash": "^4.17.15",
+        "lodash": "^4.17.21",
         "fast-gbk": "^0.0.1",
         "tree-crawl": "^1.1.0"
     }
