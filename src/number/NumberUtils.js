@@ -7,11 +7,38 @@ export default class NumberUtils {
      * @param base 进制，默认十进制
      */
     static preZeroFill(totalLength, value, base=10) {
-        value = parseFloat(value);
+        //value = parseFloat(value);
         let pad = totalLength - (value + "").length;
         if (pad <= 0) {
             return value;
         }
         return Array(pad).fill("0").join("") + (value + "")
+    }
+
+
+    /**
+     * 截取js小数计算出现无限循环之外的部分
+     * strip(0.2+0.1)==0.3
+     * @param number
+     * @param precision
+     * @returns {number}
+     */
+    static strip(number, precision = 12) {
+        if (typeof number != "number") {
+            number = 0;
+        }
+        return +parseFloat(number.toPrecision(precision));
+    }
+
+    /**
+     *
+     * @param number
+     * @param fixed
+     */
+    static stripAndFix(number, fixedNum=2){
+        if (typeof number != "number") {
+            number = 0;
+        }
+        return this.strip(number).toFixed(fixedNum) * 1;
     }
 }
