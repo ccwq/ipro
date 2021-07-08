@@ -1,8 +1,8 @@
 
 //日期
 import DateUtils from "./date/DateUtils";
-import "./date/date.prototype";
-import $D from "./date/date-prototype";
+import $D from "./date/date-prototype.js";
+import "./date/date.prototype.js"
 
 import ObjectUtils from "./object/ObjectUtils";
 

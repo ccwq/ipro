@@ -1,4 +1,4 @@
-import crawl from "tree-crawl";
+import crawl from "tree-crawl/index.js";
 import compact from "lodash/compact";
 import {getValue} from "./object/ObjectUtils";
 
