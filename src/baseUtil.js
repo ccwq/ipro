@@ -23,7 +23,9 @@ export const safeBindToObject = function(prototype, key, value){
     }
 }
 
+
 /**
+ *
  * 遍历树
  * @param treedata
  * @param childrenField
@@ -31,8 +33,10 @@ export const safeBindToObject = function(prototype, key, value){
  */
 export const treeEach = function(treedata, childrenField, stepCallback){
 
+    let isArray = false;
     if (Array.isArray(treedata)) {
         treedata = {[childrenField]: treedata}
+        isArray = true;
     }
     crawl(
         treedata,
@@ -43,7 +47,12 @@ export const treeEach = function(treedata, childrenField, stepCallback){
             }
         }
     )
-    return treedata;
+
+    if (isArray) {
+        return treedata[childrenField];
+    }else{
+        return treedata;
+    }
 }
 
 
