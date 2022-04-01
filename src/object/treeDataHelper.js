@@ -4,15 +4,27 @@
  * @param childrenKey
  * @returns {{}}
  */
-const treeDataHelper = function(treeData, childrenKey = 'children', checkedKey = 'checked') {
+const makeTreeDataHelper = function(treeData, options = {}) {
     const indexes = {}
     const allNodes = []
+    let {
+        childrenKey = "children",
+        checkedKey = "checked",
+        idKey = "id"
+    } = options;
     let index = 0
 
     // 所有存在的节点中最大的深度
     let maxDepth = 0
 
-    const _step_node = function(data, parent) {
+    // 修改options
+    const setOptions = function (options = {}) {
+        childrenKey = options.childrenKey || childrenKey
+        checkedKey = options.checkedKey || checkedKey
+        idKey = options.idKey || idKey
+    };
+
+    const traverse = function(data, parent) {
         data.forEach(function(item) {
             item = {...item};
             allNodes.push(item);
@@ -21,18 +33,18 @@ const treeDataHelper = function(treeData, childrenKey = 'children', checkedKey =
             const deepth = parent ? parent.deepth + 1 : 0;
             item.deepth = deepth;
             maxDepth = Math.max(maxDepth, deepth)
-            item.path = parent ? parent.path + '.' + item.id : '0'
-            item.parentIdList = parent ? [...parent.parentIdList, parent.id] : [];
-            indexes[item.id] = item
+            item.path = parent ? parent.path + '.' + item[idKey] : '0'
+            item.parentIdList = parent ? [...parent.parentIdList, parent[idKey]] : [];
+            indexes[item[idKey]] = item
             if (item[childrenKey] && item[childrenKey].length > 0) {
-                _step_node(item[childrenKey], item)
+                traverse(item[childrenKey], item)
             }
         })
     };
 
     const isNodeCheckedByChildren = function(node) {
         if (node[childrenKey] && node[childrenKey].length > 0) {
-            const hasUnchecked = node[childrenKey].map(el => getNode(el.id)).find(item => !item[checkedKey]);
+            const hasUnchecked = node[childrenKey].map(el => getNode(el[idKey])).find(item => !item[checkedKey]);
             return !hasUnchecked;
         } else {
             return false
@@ -45,7 +57,7 @@ const treeDataHelper = function(treeData, childrenKey = 'children', checkedKey =
         if (!Array.isArray(treeData)) {
             treeData = treeData[childrenKey];
         }
-        _step_node(treeData)
+        traverse(treeData)
     };
     updateIndexes(treeData)
 
@@ -106,9 +118,22 @@ const treeDataHelper = function(treeData, childrenKey = 'children', checkedKey =
         }
     }
 
+    // 重置节点的选中状态,应用于编辑时
+    const resetCheckStatus = function(checkedKeyList) {
+        const dic = {};
+        if (checkedKeyList) {
+            checkedKeyList.forEach(item => {
+                dic[item] = true;
+            })
+        }
+        allNodes.forEach(item => {
+            item[checkedKey] = dic[item[idKey]] || false;
+        })
+    }
+
     // 遍历一个节点以及所有子节点
     const travelNode = function(id, callback) {
-        const node = typeof id === "string" ? getNode(id) : getNode(id.id);
+        const node = typeof id === "string" ? getNode(id) : getNode(id[idKey]);
         callback(node)
         if (node[childrenKey] && node[childrenKey].length > 0) {
             node[childrenKey].forEach(function(item) {
@@ -155,10 +180,12 @@ const treeDataHelper = function(treeData, childrenKey = 'children', checkedKey =
         updateIndexes,
         setChecked,
         setProps,
-        travelAllNode
+        travelAllNode,
+        setOptions,
+        resetCheckStatus
     }
 }
 
 export {
-    treeDataHelper
+    makeTreeDataHelper
 }

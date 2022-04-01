@@ -83,14 +83,15 @@ module.exports = {
         }),
     ],
     module: {
-        rules: [{
-            test: /\.css$/,
-            use: [
-                MiniCssExtract.loader,
-                'css-loader',
-                'postcss-loader'
-            ]
-        },
+        rules: [
+            {
+                test: /\.css$/,
+                use: [
+                    MiniCssExtract.loader,
+                    'css-loader',
+                    'postcss-loader'
+                ]
+            },
             {
                 test: /\.less$/,
                 use: [
@@ -118,7 +119,7 @@ module.exports = {
                         ]
                     }
                 }
-            }
+            },
         ]
     }
 }
