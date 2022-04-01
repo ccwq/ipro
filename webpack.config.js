@@ -73,18 +73,6 @@ module.exports = {
         extensions: ['*', '.js', '.vue', '.json']
     },
     plugins: [
-        // new HtmlWebpackPlugin({
-        //     template: './src/index.html',
-        //     filename: 'index.html',
-        //     minify: {
-        //         removeAttributeQuotes: true,
-        //         collapseWhitespace: true
-        //     },
-        //     hash: true
-        // }),
-        // new MiniCssExtract({
-        //     filename: 'main.css'
-        // }),
         new CleanWebpackPlugin(),
 
         // short-circuits all Vue.js warning code
