@@ -63,18 +63,12 @@ const makeTreeDataHelper = function(treeData, options = {}) {
 
     // 获取父节点列表
     const getParents = function(id) {
-        const parentList = []
-        let parent = indexes[id].parent
-        while (parent) {
-            parentList.push(parent)
-            parent = parent.parent
-        }
-        return parentList
+        return getNode(id).parentIdList.map(id => getNode(id));
     }
 
     // 获取同级节点
     const getSublings = function(id) {
-        const node = getNode()
+        const node = getNode(id)
         return allNodes.filter(function(item) {
             return item.parent === node.parent;
         })
