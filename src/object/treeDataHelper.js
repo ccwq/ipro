@@ -5,12 +5,30 @@
  * @returns {{}}
  */
 const makeTreeDataHelper = function(treeData, options = {}) {
-    const indexes = {}
-    const allNodes = []
+
+    // 原始节点的字典
+    let originNodeIndexes = {};
+
+    // 原始节点列表
+    let allOriginNodes = [];
+
+    // 镜像节点镜像列表
+    let allMirrorNodes = [];
+    let mirrorNodeIndexes = {};
+
+    // 重置缓存数据 originNodeIndexes allOriginNodes allMirrorNodes mirrorNodeIndexes
+    const resetConstData = function(){
+        originNodeIndexes = {};
+        allOriginNodes = [];
+        allMirrorNodes=[];
+        mirrorNodeIndexes=  {};
+    }
+    resetConstData();
+
     let {
         childrenKey = "children",
         checkedKey = "checked",
-        idKey = "id"
+        idKey = "id",
     } = options;
     let index = 0
 
@@ -26,8 +44,10 @@ const makeTreeDataHelper = function(treeData, options = {}) {
 
     const traverse = function(data, parent) {
         data.forEach(function(item) {
+            const id = item[idKey]
+            originNodeIndexes[id] = item;
             item = {...item};
-            allNodes.push(item);
+            allMirrorNodes.push(item);
             item.parent = parent
             item.index = index++
             const deepth = parent ? parent.deepth + 1 : 0;
@@ -35,7 +55,7 @@ const makeTreeDataHelper = function(treeData, options = {}) {
             maxDepth = Math.max(maxDepth, deepth)
             item.path = parent ? parent.path + '.' + item[idKey] : '0'
             item.parentIdList = parent ? [...parent.parentIdList, parent[idKey]] : [];
-            indexes[item[idKey]] = item
+            mirrorNodeIndexes[id] = item
             if (item[childrenKey] && item[childrenKey].length > 0) {
                 traverse(item[childrenKey], item)
             }
@@ -53,6 +73,9 @@ const makeTreeDataHelper = function(treeData, options = {}) {
 
     // 更新索引
     const updateIndexes = function(treeData) {
+
+        resetConstData();
+
         // 如果是数组,设置虚拟根节点
         if (!Array.isArray(treeData)) {
             treeData = treeData[childrenKey];
@@ -69,13 +92,25 @@ const makeTreeDataHelper = function(treeData, options = {}) {
     // 获取同级节点
     const getSublings = function(id) {
         const node = getNode(id)
-        return allNodes.filter(function(item) {
+        return allMirrorNodes.filter(function(item) {
             return item.parent === node.parent;
         })
     }
 
+    // 获取镜像节点
     const getNode = function(id) {
-        return indexes[id]
+        if (typeof id != "string") {
+            id = get(id, idKey)
+        }
+        return mirrorNodeIndexes[id]
+    }
+
+    // 获取原始节点
+    const getOriginNode = function(id) {
+        if (typeof id != "string") {
+            id = get(id, idKey)
+        }
+        return originNodeIndexes[id]
     }
 
     // 获取节点的深度
@@ -86,21 +121,21 @@ const makeTreeDataHelper = function(treeData, options = {}) {
 
     // 设置节点属性
     const setProps = function(id, props) {
-        const item = indexes[id]
+        const item = getNode(id)
         if (item) {
             Object.assign(item, props);
         }
     }
     // 设置check状态
     const setChecked = function(id, checked, updateParentAndChildren = false) {
-        const item = indexes[id]
+        const item = getNode(id)
         if (item) {
             item[checkedKey] = checked
 
             if (updateParentAndChildren) {
                 // 设置父级
                 item.parentIdList.forEach(id => {
-                    const parent = indexes[id];
+                    const parent = mirrorNodeIndexes[id];
                     parent[checkedKey] = isNodeCheckedByChildren(parent)
                 });
 
@@ -120,14 +155,14 @@ const makeTreeDataHelper = function(treeData, options = {}) {
                 dic[item] = true;
             })
         }
-        allNodes.forEach(item => {
+        allMirrorNodes.forEach(item => {
             item[checkedKey] = dic[item[idKey]] || false;
         })
     }
 
     // 遍历一个节点以及所有子节点
     const travelNode = function(id, callback) {
-        const node = typeof id === "string" ? getNode(id) : getNode(id[idKey]);
+        const node = getNode(id)
         callback(node)
         if (node[childrenKey] && node[childrenKey].length > 0) {
             node[childrenKey].forEach(function(item) {
@@ -139,8 +174,8 @@ const makeTreeDataHelper = function(treeData, options = {}) {
     // 获取所有节点中最浅的深度
     const getMinDeepth = function() {
         let minDeep = maxDepth
-        for (const i in allNodes) {
-            const node = allNodes[i]
+        for (const i in allMirrorNodes) {
+            const node = allMirrorNodes[i]
             if (node.checked) {
                 minDeep = Math.min(minDeep, node.deepth)
             }
@@ -151,13 +186,14 @@ const makeTreeDataHelper = function(treeData, options = {}) {
         return minDeep
     }
     // 通过条件过滤节点
-    const getNodeListByFilter = filter => allNodes.filter(filter);
+    const getNodeListByFilter = filter => allMirrorNodes.filter(filter);
 
     // 遍历所有节点
     const travelAllNode = function(callback) {
-        for (const i in allNodes) {
-            const node = allNodes[i]
-            if (callback(node) === false) {
+        for (const i in allMirrorNodes) {
+            const node = allMirrorNodes[i]
+            const oNode = getOriginNode(node[idKey])
+            if (callback(node, oNode) === false) {
                 break
             }
         }
@@ -176,7 +212,8 @@ const makeTreeDataHelper = function(treeData, options = {}) {
         setProps,
         travelAllNode,
         setOptions,
-        resetCheckStatus
+        resetCheckStatus,
+        getOriginNode,
     }
 }
 
