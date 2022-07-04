@@ -56,6 +56,7 @@ if (!argv.format || argv.format === 'es') {
         ...baseConfig,
         external,
         output: {
+            sourcemap: true,
             file: 'dist/vue-iplus.esm.js',
             format: 'esm',
             exports: 'named',
@@ -87,6 +88,7 @@ if (!argv.format || argv.format === 'cjs') {
         ...baseConfig,
         external,
         output: {
+            sourcemap: true,
             compact: true,
             file: 'dist/vue-iplus.ssr.js',
             format: 'cjs',
@@ -108,6 +110,7 @@ if (!argv.format || argv.format === 'umd') {
         ...baseConfig,
         external,
         output: {
+            sourcemap: true,
             compact: true,
             file: 'dist/vue-iplus.js',
             format: 'umd',

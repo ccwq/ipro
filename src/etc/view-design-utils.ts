@@ -1,4 +1,3 @@
-
 const textLength = (text:string):number => {
     return text.replace(/[^\x00-\xff]/g, "**").length
 }

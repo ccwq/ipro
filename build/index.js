@@ -42,6 +42,7 @@ async function build(inputOptions, outputOptions) {
         const outputOpt = {
             file: ouputPathForDts,
             format: outputOptions.format,
+            sourcemap: true,
         };
         const bundle = await rollup.rollup(inputOpt);
         await bundle.write(outputOpt);
