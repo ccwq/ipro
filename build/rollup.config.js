@@ -1,8 +1,6 @@
 // rollup.config.js
 const fs = require('fs');
 const path = require('path');
-const vue = require('rollup-plugin-vue');
-const alias = require('@rollup/plugin-alias');
 const commonjs = require('@rollup/plugin-commonjs');
 const replace = require('@rollup/plugin-replace');
 const babel = require('rollup-plugin-babel');
@@ -19,30 +17,18 @@ const argv = minimist(process.argv.slice(2));
 
 const projectRoot = path.resolve(__dirname, '..');
 
+console.log(projectRoot, 'projectRoot');
+
 const baseConfig = {
     input: 'src/entry.js',
     plugins: {
-        preVue: [
-            alias({
-                resolve: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
-                entries: {
-                    '@': path.resolve(projectRoot, 'src'),
-                },
-            }),
-        ],
         replace: {
             'process.env.NODE_ENV': JSON.stringify('production'),
             'process.env.ES_BUILD': JSON.stringify('false'),
         },
-        vue: {
-            css: true,
-            template: {
-                isProduction: true,
-            },
-        },
         babel: {
             exclude: 'node_modules/**',
-            extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
     },
 };
@@ -79,8 +65,6 @@ if (!argv.format || argv.format === 'es') {
                 ...baseConfig.plugins.replace,
                 'process.env.ES_BUILD': JSON.stringify('true'),
             }),
-            ...baseConfig.plugins.preVue,
-            vue(baseConfig.plugins.vue),
             babel({
                 ...baseConfig.plugins.babel,
                 presets: [
@@ -112,14 +96,6 @@ if (!argv.format || argv.format === 'cjs') {
         },
         plugins: [
             replace(baseConfig.plugins.replace),
-            ...baseConfig.plugins.preVue,
-            vue({
-                ...baseConfig.plugins.vue,
-                template: {
-                    ...baseConfig.plugins.vue.template,
-                    optimizeSSR: true,
-                },
-            }),
             babel(baseConfig.plugins.babel),
             commonjs(),
         ],
@@ -141,8 +117,6 @@ if (!argv.format || argv.format === 'umd') {
         },
         plugins: [
             replace(baseConfig.plugins.replace),
-            ...baseConfig.plugins.preVue,
-            vue(baseConfig.plugins.vue),
             babel(baseConfig.plugins.babel),
             commonjs(),
             terser({
@@ -155,6 +129,14 @@ if (!argv.format || argv.format === 'umd') {
     buildFormats.push(unpkgConfig);
 }
 
+
+//
+// buildFormats.forEach((config, i) => {
+//     buildFormats[i] = [
+//         config,
+//
+//     ]
+// })
 
 
 // Export config

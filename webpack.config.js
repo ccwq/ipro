@@ -49,6 +49,12 @@ const getFiles = filesPath => {
 }
 
 
+const entry = Object.values(getFiles("src/**/*.?(js|ts)")).reduce((ret, el) => {
+    console.log(el, el.filePath);
+    ret[el.entryName] = el.filePath;
+    return ret;
+}, {});
+
 
 module.exports = {
     devServer: {
@@ -59,10 +65,7 @@ module.exports = {
     },
     // mode: "development",
     mode: "production",
-    entry: Object.values(getFiles("src/**/*.js")).reduce((ret, el)=>{
-        ret[el.entryName] = el.filePath;
-        return ret;
-    }, {}),
+    entry,
     output: {
         filename: "[name].js",
         path: path.resolve(__dirname, "dist"),

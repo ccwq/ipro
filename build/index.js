@@ -1,15 +1,21 @@
 const rollup = require('rollup');
 const optionLs = require("./rollup.config");
 const glob = require("glob");
+const dts = require("rollup-plugin-dts").default;
+const path = require("path")
 
 //配置
 const DIST = "dist";
 const SRC = "src";
 
+const package = require(path.resolve(__dirname, "../package.json"));
+const fs = require("fs");
+
 
 
 async function build(inputOptions, outputOptions) {
     // create a bundle
+
     const bundle = await rollup.rollup(inputOptions);
 
     // console.log(bundle.imports); // an array of external dependencies
@@ -21,12 +27,31 @@ async function build(inputOptions, outputOptions) {
 
     // or write the bundle to disk
     await bundle.write(outputOptions);
+    if(inputOptions.input.endsWith(".ts")){
+        const inputOpt = {
+            // 生成 .d.ts 类型声明文件
+            input: inputOptions.input,
+            plugins: [dts()],
+        }
+        const typeDirName = "types";
+        const typeDirPath = path.resolve(__dirname, "../", typeDirName);
+        if(!fs.existsSync(typeDirPath)){
+            fs.mkdirSync(typeDirPath);
+        }
+        const ouputPathForDts = inputOptions.input.replace("src", "dist").replace(".ts", ".d.ts");
+        const outputOpt = {
+            file: ouputPathForDts,
+            format: outputOptions.format,
+        };
+        const bundle = await rollup.rollup(inputOpt);
+        await bundle.write(outputOpt);
+    }
 }
 
 
 
 
-glob("src/**/*.js", {}, async function (er, files) {
+glob("src/**/*.?(js|ts)", {}, async function (er, files) {
     if (er) {
         throw er;
     }
