@@ -1,6 +1,6 @@
 {
     "name": "ipro",
-    "version": "1.0.68",
+    "version": "1.0.69-0",
     "main": "src/index.js",
     "license": "MIT",
     "scripts": {
