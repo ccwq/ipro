@@ -25,7 +25,7 @@
         "@vue/cli-service": "^4.3.1",
         "cross-env": "^7.0.2",
         "glob": "^7.1.6",
-        "minimist": "^1.2.5",
+        "minimist": "^1.2.6",
         "rollup": "^2.7.3",
         "rollup-plugin-babel": "^4.4.0",
         "rollup-plugin-dts": "^4.2.2",
